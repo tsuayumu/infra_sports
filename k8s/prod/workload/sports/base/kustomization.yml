@@ -1,0 +1,30 @@
+---
+resources:
+  - './deployment-stable.yml'
+  - './service-nodeports.yml'
+
+configMapGenerator:
+  # - name: 'cloudsql-instances'
+  #   literals:
+  #     - 'CLOUDSQL_INSTANCE_1=takeout-249108:asia-northeast1:default'
+  #     - 'CLOUDSQL_PORT_1=3306'
+  - name: 'rails-env'
+    literals:
+      - 'RAILS_ENV=production'
+      - 'RACK_ENV=production'
+      - 'RAILS_SERVE_STATIC_FILES=1'
+  - name: 'database-host'
+    literals:
+      - 'DATABASE_HOST=10.118.32.9'
+  # - name: 'gcp-project'
+  #   literals:
+  #     - 'GCP_PROJECT_NAME=test-25245'
+  #     - 'GCP_PROJECT_ID=test-25245-264913'
+
+secretGenerator:
+  # - name: 'database-url'
+  #   files:
+  #     - './secret/DATABASE_URL'
+  - name: 'secret-key-base'
+    files:
+      - './secret/SECRET_KEY_BASE'

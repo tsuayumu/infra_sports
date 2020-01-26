@@ -1,0 +1,43 @@
+---
+apiVersion: 'apps/v1'
+kind: 'Deployment'
+metadata:
+  name: 'stable'
+  labels:
+    release: 'stable'
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      release: 'stable'
+  template:
+    metadata:
+      labels:
+        release: 'stable'
+    spec:
+      containers:
+        - name: 'sports'
+          image: 'gcr.io/test-25245-264913/sports@sha256:b91904691ea68c2583d6471daf63f2a1fdfeaf0a63e634bd835bb62cdc07168e'
+          ports:
+            - containerPort: 3001
+          envFrom:
+            - configMapRef:
+                name: 'rails-env'
+            - configMapRef:
+                name: 'database-host'
+            - secretRef:
+                name: 'secret-key-base'
+        # - name: 'sports-cloudsql-proxy'
+        #   image: 'gcr.io/cloudsql-docker/gce-proxy:1.15'
+        #   envFrom:
+        #     - configMapRef:
+        #         name: 'cloudsql-instances'
+        #   command:
+        #     - '/cloud_sql_proxy'
+        #     - '-instances=$(CLOUDSQL_INSTANCE_1)=tcp:$(CLOUDSQL_PORT_1)'
+        #     - '-ip_address_types=PRIVATE'
+        #   securityContext:
+        #     runAsUser: 2
+        #     allowPrivilegeEscalation: false
