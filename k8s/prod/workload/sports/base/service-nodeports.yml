@@ -5,11 +5,20 @@ metadata:
 spec:
   externalTrafficPolicy: Cluster
   ports:
-  - port: 80
+  - name: http
+    port: 80
     protocol: TCP
+    targetPort: 80
+  - name: https
+    protocol: TCP
+    port: 443
     targetPort: 80
   selector:
     release: stable
   sessionAffinity: None
   type: LoadBalancer
-  loadBalancerIP: 35.203.174.55
+  loadBalancerIP: 34.107.172.230
+status:
+  loadBalancer:
+    ingress:
+    - ip: 34.107.172.230

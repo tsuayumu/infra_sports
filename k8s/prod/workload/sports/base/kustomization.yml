@@ -1,7 +1,9 @@
 ---
 resources:
   - './deployment-stable.yml'
-  - './service-nodeports.yml'
+  - './service-externalip.yml'
+  - './ingress.yml'
+  - './managed_certificate.yml'
 
 configMapGenerator:
   - name: 'rails-env'
