@@ -18,26 +18,36 @@ spec:
         release: 'stable'
     spec:
       containers:
-        - name: 'sports'
-          image: 'gcr.io/test-25245-264913/sports@sha256:b91904691ea68c2583d6471daf63f2a1fdfeaf0a63e634bd835bb62cdc07168e'
+        - name: 'rails-app'
+          image: 'tsuayumu/gcp-rails_sports-rails_backend:242485d7b28cda3650fa16030b1e7778bc28008cdf3e13fdeac85021ba4db9a3'
           ports:
             - containerPort: 3001
           envFrom:
             - configMapRef:
                 name: 'rails-env'
-            - configMapRef:
-                name: 'database-host'
             - secretRef:
                 name: 'secret-key-base'
-        # - name: 'sports-cloudsql-proxy'
-        #   image: 'gcr.io/cloudsql-docker/gce-proxy:1.15'
-        #   envFrom:
-        #     - configMapRef:
-        #         name: 'cloudsql-instances'
-        #   command:
-        #     - '/cloud_sql_proxy'
-        #     - '-instances=$(CLOUDSQL_INSTANCE_1)=tcp:$(CLOUDSQL_PORT_1)'
-        #     - '-ip_address_types=PRIVATE'
-        #   securityContext:
-        #     runAsUser: 2
-        #     allowPrivilegeEscalation: false
+            - secretRef:
+                name: 'twitter-consumer-secret'
+            - secretRef:
+                name: 'twitter-access-token-secret'
+            - secretRef:
+                name: 'db-host'
+            - secretRef:
+                name: 'db-username'
+            - secretRef:
+                name: 'db-password'
+        - name: 'nuxt-app'
+          image: 'tsuayumu/gcp-rails_sports-rails_frontend:b5d281406b6f4ea851624a9d7eb80fb00a11ee352ea79d330fd2e920eaad9ad4'
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: 'node-env'
+        - name: 'web'
+          image: 'tsuayumu/gcp-rails_sports-rails_web:139a98f278ccfc2f7a4e8137ea5d9f728b4ef5321038a6a993ddb0f561a15056'
+          ports:
+            - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: 'node-env'

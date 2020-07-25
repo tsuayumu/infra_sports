@@ -4,27 +4,31 @@ resources:
   - './service-nodeports.yml'
 
 configMapGenerator:
-  # - name: 'cloudsql-instances'
-  #   literals:
-  #     - 'CLOUDSQL_INSTANCE_1=takeout-249108:asia-northeast1:default'
-  #     - 'CLOUDSQL_PORT_1=3306'
   - name: 'rails-env'
     literals:
       - 'RAILS_ENV=production'
       - 'RACK_ENV=production'
       - 'RAILS_SERVE_STATIC_FILES=1'
-  - name: 'database-host'
+  - name: 'node-env'
     literals:
-      - 'DATABASE_HOST=10.118.32.9'
-  # - name: 'gcp-project'
-  #   literals:
-  #     - 'GCP_PROJECT_NAME=test-25245'
-  #     - 'GCP_PROJECT_ID=test-25245-264913'
+      - 'NODE_ENV=production'
 
 secretGenerator:
-  # - name: 'database-url'
-  #   files:
-  #     - './secret/DATABASE_URL'
   - name: 'secret-key-base'
     files:
       - './secret/SECRET_KEY_BASE'
+  - name: 'twitter-consumer-secret'
+    files:
+      - './secret/TWITTER_CONSUMER_SECRET'
+  - name: 'twitter-access-token-secret'
+    files:
+      - './secret/TWITTER_ACCESS_TOKEN_SECRET'
+  - name: 'db-host'
+    files:
+      - './secret/DB_HOST'
+  - name: 'db-username'
+    files:
+      - './secret/DB_USERNAME'
+  - name: 'db-password'
+    files:
+      - './secret/DB_PASSWORD'
