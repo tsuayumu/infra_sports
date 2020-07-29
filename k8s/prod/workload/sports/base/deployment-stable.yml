@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: 'rails-app'
-          image: 'tsuayumu/gcp-rails_sports-rails_backend:242485d7b28cda3650fa16030b1e7778bc28008cdf3e13fdeac85021ba4db9a3'
+          image: 'tsuayumu/gcp-rails_sports-rails_backend:242485d7b28cda3650fa16030b1e7778bc28008cdf3e13fdeac85021ba4db9a0'
           ports:
             - containerPort: 3001
           envFrom:
