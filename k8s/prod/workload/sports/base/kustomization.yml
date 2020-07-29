@@ -4,6 +4,7 @@ resources:
   - './service-externalip.yml'
   - './ingress.yml'
   - './managed_certificate.yml'
+  - './sealed_secret.yml'
 
 configMapGenerator:
   - name: 'rails-env'
@@ -14,23 +15,3 @@ configMapGenerator:
   - name: 'node-env'
     literals:
       - 'NODE_ENV=production'
-
-secretGenerator:
-  - name: 'secret-key-base'
-    files:
-      - './secret/SECRET_KEY_BASE'
-  - name: 'twitter-consumer-secret'
-    files:
-      - './secret/TWITTER_CONSUMER_SECRET'
-  - name: 'twitter-access-token-secret'
-    files:
-      - './secret/TWITTER_ACCESS_TOKEN_SECRET'
-  - name: 'db-host'
-    files:
-      - './secret/DB_HOST'
-  - name: 'db-username'
-    files:
-      - './secret/DB_USERNAME'
-  - name: 'db-password'
-    files:
-      - './secret/DB_PASSWORD'

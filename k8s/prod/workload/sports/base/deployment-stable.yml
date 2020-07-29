@@ -26,17 +26,7 @@ spec:
             - configMapRef:
                 name: 'rails-env'
             - secretRef:
-                name: 'secret-key-base'
-            - secretRef:
-                name: 'twitter-consumer-secret'
-            - secretRef:
-                name: 'twitter-access-token-secret'
-            - secretRef:
-                name: 'db-host'
-            - secretRef:
-                name: 'db-username'
-            - secretRef:
-                name: 'db-password'
+                name: 'mysecret'
         - name: 'nuxt-app'
           image: 'tsuayumu/gcp-rails_sports-rails_frontend:b5d281406b6f4ea851624a9d7eb80fb00a11ee352ea79d330fd2e920eaad9ad4'
           ports:
