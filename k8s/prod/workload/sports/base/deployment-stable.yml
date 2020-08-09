@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: 'rails-app'
-          image: 'tsuayumu/gcp-rails_sports-rails_backend:242485d7b28cda3650fa16030b1e7778bc28008cdf3e13fdeac85021ba4db9a0'
+          image: 'gcr.io/hale-sentry-267012/nuxt-app:e5aea1d08902e7255f4dd7ff9a45a5eca6051eb8'
           ports:
             - containerPort: 3001
           envFrom:
@@ -28,7 +28,7 @@ spec:
             - secretRef:
                 name: 'mysecret'
         - name: 'nuxt-app'
-          image: 'tsuayumu/gcp-rails_sports-rails_frontend:b5d281406b6f4ea851624a9d7eb80fb00a11ee352ea79d330fd2e920eaad9ad4'
+          image: 'gcr.io/hale-sentry-267012/nuxt-app:8a37dc08f090664469df05961ba9e14b2c8da31c'
           ports:
             - containerPort: 3000
           envFrom:
