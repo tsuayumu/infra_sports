@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: 'rails-app'
-          image: 'gcr.io/hale-sentry-267012/nuxt-app:e5aea1d08902e7255f4dd7ff9a45a5eca6051eb8'
+          image: 'gcr.io/hale-sentry-267012/rails-app:e5aea1d08902e7255f4dd7ff9a45a5eca6051eb8'
           ports:
             - containerPort: 3001
           envFrom:
