@@ -1,3 +1,8 @@
 ---
 bases:
 - base
+images:
+  - name: gcr.io/hale-sentry-267012/nuxt-app
+    newTag: d2221fef1c42e231c2bf946289e0abbb578de9f4
+  - name: gcr.io/hale-sentry-267012/rails-app
+    newTag: e5aea1d08902e7255f4dd7ff9a45a5eca6051eb8
