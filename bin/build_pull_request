@@ -1,0 +1,68 @@
+#!/usr/bin/env ruby
+require 'open3'
+require 'net/http'
+require 'json'
+
+class BuildPullRequest
+  class << self
+    def build
+      new.build
+    end
+  end
+
+  def initialize
+    ENV['TZ'] = 'Asia/Tokyo'
+    @now = Time.now
+  end
+
+  def build
+    return unless commit_and_push
+    build_pull_request
+  end
+
+  private
+
+  def commit_and_push
+    ret = run_exec("git diff")
+    return false if !ret || ret.empty?
+
+    run_exec("git checkout -b #{branch}")
+    run_exec("git commit -a -m 'deploy #{@now}'")
+    run_exec("git push origin #{branch}")
+
+    true
+  end
+
+  def build_pull_request
+    http = Net::HTTP.new("api.github.com", 443)
+    http.use_ssl = true
+    req = Net::HTTP::Post.new('/repos/tsuayumu/infra_sports/pulls')
+    req["Authorization"] = "token #{ENV['GITHUB_API_TOKEN']}"
+    req["Content-Type"] = "application/json"
+
+    payload = {
+      title: "deploy #{@now}",
+      head: branch,
+      base: "master",
+      body: "@tabelog-takeout/developers マージしたらデプロイを実施してください"
+    }.to_json
+
+    req.body = payload
+    res = http.request(req)
+
+    puts "code:#{res.code} body:#{res.body}"
+    raise "PR作成失敗" unless (200...300).cover?(res.code.to_i)
+  end
+
+  def branch
+    @branch ||= "deploy_#{@now.strftime("%Y%m%d%H%M%S%6N")}"
+  end
+
+  def run_exec(command)
+    o, s = Open3.capture2(command)
+    raise "コマンド実行失敗 : #{command}" unless s.success?
+    o
+  end
+end
+
+BuildPullRequest.build

@@ -1,0 +1,108 @@
+#!/usr/bin/env ruby
+require 'open3'
+require 'yaml'
+require 'json'
+require 'net/http'
+
+class NewestDeploy
+  class << self
+    def build
+      new.build
+    end
+  end
+
+  HOST = "gcr.io"
+  PROJECT_ID = "hale-sentry-267012"
+
+  DEPLOYMENTS = {
+    'sports': %w(sports_frontend sports_backend)
+  }
+
+  GCR_WAIT_COUNT = 3
+
+  def initialize
+    @latest_commit_ids = {}
+  end
+
+  def build
+    DEPLOYMENTS.each do |deployment, images|
+      image_tags = newest_image_tags(deployment, images)
+      edit_manifests(deployment, image_tags)
+    end
+  end
+
+  private
+
+  def newest_image_tags(deployment, images)
+    tags = []
+
+    images.each do |image|
+      tags << {
+        'name' => File.join(project_path, image),
+        'newTag' => target_tag(image)
+      }
+    end
+
+    tags
+  end
+
+  def edit_manifests(deployment, image_tags)
+    File.open(manifest_file(deployment), "w") do |f|
+      yaml = {
+        'bases' => %w(base),
+        'images' => image_tags
+      }
+
+      YAML.dump(yaml, f, indentation: 2)
+    end
+  end
+
+  def target_tag(image)
+    latest_id = latest_commit_id(image)
+    image_name = "#{image}:#{latest_id}"
+    raise "最新のコミットに対するdocker imageが存在しません : #{image_name}" unless image_exists?(image_name)
+
+    latest_id
+  end
+
+  def latest_commit_id(repo)
+    return @latest_commit_ids[repo] if @latest_commit_ids.key?(repo)
+
+    http = Net::HTTP.new("api.github.com", 443)
+    http.use_ssl = true
+    req = Net::HTTP::Get.new("/repos/tsuayumu/#{repo}/branches/master")
+    req["Authorization"] = "token #{ENV['GITHUB_API_TOKEN']}"
+    req["Content-Type"] = "application/json"
+
+    res = http.request(req)
+    puts "repo: #{repo} code:#{res.code} body:#{res.body}"
+    raise "コミットID取得失敗" unless (200...300).cover?(res.code.to_i)
+
+    data = JSON.parse(res.body)
+    @latest_commit_ids[repo] = data['commit']['sha']
+  end
+
+  def image_exists?(name)
+    command = "gcloud container images describe #{project_path}/#{name}"
+    ret = false
+
+    GCR_WAIT_COUNT.times do
+      _, s = Open3.capture2(command)
+      ret = s.success?
+      break if ret
+      sleep 5
+    end
+
+    ret
+  end
+
+  def project_path
+    @project_path ||= File.join(HOST, PROJECT_ID)
+  end
+
+  def manifest_file(deployment)
+    File.join("k8s/prod/workload", deployment.to_s, "kustomization.yml")
+  end
+end
+
+NewestDeploy.build
