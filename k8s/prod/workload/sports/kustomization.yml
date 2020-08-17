@@ -2,7 +2,7 @@
 bases:
 - base
 images:
-  - name: gcr.io/hale-sentry-267012/nuxt-app
-    newTag: d2221fef1c42e231c2bf946289e0abbb578de9f4
-  - name: gcr.io/hale-sentry-267012/rails-app
-    newTag: e5aea1d08902e7255f4dd7ff9a45a5eca6051eb8
+  - name: gcr.io/hale-sentry-267012/frontend-sports
+    newTag: e964a7d4b71615bca8f58d33dfb43ae08f68ae47
+  - name: gcr.io/hale-sentry-267012/backend-sports
+    newTag: bffcc8a9da67bee118501353249a58def57d9730

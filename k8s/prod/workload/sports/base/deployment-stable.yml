@@ -18,8 +18,8 @@ spec:
         release: 'stable'
     spec:
       containers:
-        - name: 'rails-app'
-          image: 'gcr.io/hale-sentry-267012/rails-app:something'
+        - name: 'backend-sports'
+          image: 'gcr.io/hale-sentry-267012/backend-sports:something'
           ports:
             - containerPort: 3001
           envFrom:
@@ -27,8 +27,8 @@ spec:
                 name: 'rails-env'
             - secretRef:
                 name: 'mysecret'
-        - name: 'nuxt-app'
-          image: 'gcr.io/hale-sentry-267012/nuxt-app:something'
+        - name: 'frontend-sports'
+          image: 'gcr.io/hale-sentry-267012/frontend-sports:something'
           ports:
             - containerPort: 3000
           envFrom:

@@ -15,7 +15,7 @@ class NewestDeploy
   PROJECT_ID = "hale-sentry-267012"
 
   DEPLOYMENTS = {
-    'sports': %w(frontend_sports backend_sports)
+    'sports': %w(frontend-sports backend-sports)
   }
 
   GCR_WAIT_COUNT = 3
