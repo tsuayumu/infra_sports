@@ -3,6 +3,6 @@ bases:
 - base
 images:
 - name: gcr.io/hale-sentry-267012/frontend-sports
-  newTag: 25498cfa79de3db3497ffd32f14427502626a011
+  newTag: 136d381f01650dbd979582fde76ecab6f58ee25d
 - name: gcr.io/hale-sentry-267012/backend-sports
-  newTag: b0ebfa589bb92117c609b559a55ad15c355f89ca
+  newTag: 957ccdf812c895e908b5e13836ea40830dc74914
